@@ -43,10 +43,11 @@
         id (strip-html-suffix (relative-path base file))]
     (assoc m
       :file     file
-      :id       id
+      :id       id      
       :title    (html/text (first (html/select r [:head :title])))
       :pubdate  (when-let [date-str (:pubdate m)] (parse-date date-str))
-      :tags     (when-let [tags-str (:tags m)] (parse-tags tags-str)))))
+      :tags     (when-let [tags-str (:tags m)] (parse-tags tags-str))
+      :teaser   (html/select r [:.teaser]))))
 
 (defn get-site-content-metadata
   "Walks the filesystem and constructs a hash-map of metadata for each
@@ -95,10 +96,14 @@
     (count (get @tag-index tag))
     (count @published-items)))
 
-(defn get-item
+(defn get-item-content
   [id]
   (when-let [item (get @metadata id)]
-    (assoc item :content (html/html-resource (:file item)))))
+    (html/html-resource (:file item))))
+
+(defn get-item-meta
+  [id]
+  (get @metadata id))
 
 (defn get-tags
   []

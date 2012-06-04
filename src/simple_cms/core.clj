@@ -17,10 +17,22 @@
     ))
 
 (defroutes main-routes
-  (GET "/" [] (views/render-article-list (content/get-latest-items)))
-  (GET ["/content/:article-id" :article-id #".+"]  [article-id] (views/render-single-article article-id))
-  (GET "/tags/:tag" [tag] (views/render-article-list (content/get-latest-items :tag tag)))
-  (POST "/api/update-site-meta" [api-key] (update-site-meta api-key))
+  (GET "/" []
+       (views/render-latest-items))
+  (GET "/contact" []
+       (views/render-contact-details))
+  (GET ["/content/:article-id" :article-id #".+"] [article-id]
+       (views/render-article article-id))
+  (GET ["/preview/:article-id" :article-id #".+"] [article-id]
+       (views/render-article article-id :preview? true))
+  (GET "/tags/:tag" [tag]
+       (views/render-latest-items :tag tag))
+  (GET "/feed" []
+       (views/render-feed))
+  (GET "/feed/:tag" [tag]
+       (views/render-feed :tag tag))
+  (POST "/api/update-site-meta" [api-key]
+        (update-site-meta api-key))
   (route/resources "/")
   (route/not-found "Page not found"))
 

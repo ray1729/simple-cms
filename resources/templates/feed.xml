@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>1729.org.uk</title>
+  <link rel="self" href="http://www.1729.org.uk/feed" />
+  <link href="http://www.1729.org.uk/"/>
+  <updated>2003-12-13T18:30:02Z</updated>
+  <category>Some Tag</category>
+  <author>
+    <name>Ray Miller</name>
+  </author>
+  <rights>© 2012 Ray Miller</rights>
+  <id>urn:uuid:BA8577D6-AE80-11E1-878B-ED66A27E4C38</id>
+
+  <entry>
+    <title>Atom-Powered Robots Run Amok</title>
+    <link href="http://example.org/2003/12/13/atom03"/>
+    <id>http://www.1729.org.uk/content/article-id</id>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <content type="html">Content goes here</content>
+  </entry>
+
+</feed>

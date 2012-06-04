@@ -27,6 +27,9 @@
  
     <!-- Le fav and touch icons --> 
     <!--<link rel="shortcut icon" href="../assets/ico/favicon.ico"> -->
+
+    <!-- Le atom feed -->
+    <link id="atom-feed" href="/feed" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
   </head> 
  
   <body> 
@@ -64,8 +67,9 @@
                   <li><a href="#">Something else here</a></li> 
                 </ul> 
               </li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li> 
+              <li><a href="/assets/cv.pdf">CV</a></li>
+              <li><a href="https://github.com/ray1729">Software</a></li>
+              <li><a href="/contact">Contact</a></li> 
             </ul> 
           </div><!--/.nav-collapse --> 
         </div> 
@@ -92,7 +96,7 @@
                   Content content content.
                 </p>
               </div><!--/article-content-->
-              <a href="#" class="btn btn-primary pull-right">Read More</a>
+              <a id="read-more" href="#" class="btn btn-primary pull-right">Read More</a>
             </div><!--/article-->
           </div><!--/main-content-->
 
@@ -107,6 +111,13 @@
               Cambridge, UK.
             </p>
           </div>         
+          <div id="social-links" class="well centre">
+            <h1>Follow or Subscribe</h1>
+            <a href="http://facebook.com/ray1729"><img src="/img/facebook.png" alt="Facebook"></a>
+            <a href="http://twitter.com/ray1729"><img src="/img/twitter.png" alt="Twitter"></a>
+            <a href="http://uk.linkedin.com/in/raymilleruk"><img src="/img/linkedin.png" alt="LinkedIn"></a>
+            <a href="/feed"><img src="/img/rss.png" alt="Feeds"></a>
+          </div>
           <div id="tagcloud" class="well tags">
             <h1>Tag Cloud</h1>
 	    <ul>
@@ -135,7 +146,11 @@
       <hr> 
  
       <footer> 
-        <p>&copy; Ray Miller 2012</p> 
+        <p>Built with <a href="https://github.com/weavejester/compojure">Compojure</a>,
+        <a href="https://github.com/cgrand/enlive">Enlive</a> and 
+        <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.
+        Content &copy; Ray Miller 2012.
+        </p> 
       </footer> 
  
     </div><!--/.fluid-container--> 

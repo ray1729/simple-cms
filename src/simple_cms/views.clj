@@ -1,41 +1,66 @@
 (ns simple-cms.views
-  (:use [simple-cms.content :only (get-latest-items get-item-count get-item get-tags)])
+  (:use [simple-cms.content :only (get-latest-items get-item-meta get-item-content get-tags)])
   (:require [net.cgrand.enlive-html :as html]
+            [clj-time.core :as ct]
             [clj-time.format :as tf]))
 
-(defn tag-class-for-count
+(def base-url "http://localhost:3000/")
+
+(defn feed-url
+  [tag]
+  (if tag
+    (str base-url "feed/" tag)
+    (str base-url "feed")))
+
+(defn article-url
+  "Returns the url for `article`"
+  [article]
+  (str base-url "content/" (:id article)))
+
+(defn tag-url
+  "Returns the url for `tag`"
+  [tag]
+  (str base-url "tags/" tag))
+
+(defn tag-class
   "Computes the class for a tag with count `n` (log2 scale)"
   [n]
   (letfn [(pow [n m] (reduce * (repeat m n)))]
     (loop [m 5]
       (if (>= n (pow 2 m)) (str "tag" (inc m)) (recur (dec m))))))
 
-(defn article-url
-  "Returns the url for `article`"
-  [article]
-  (str "/content/" (:id article)))
-
-(defn tag-url
-  "Returns the url for `tag`"
-  [tag]
-  (str "/tags/" tag))
-
 (defn format-date
   "Formats a date as a string, e.g. 'Mon 1 Dec 2010'"
   [d]
   (tf/unparse (tf/formatter "E d MMMM yyyy") d))
 
-(def article-tmpl (html/html-resource "templates/article.html"))
+(defn format-feed-date
+  "Formats a date for use in an atom feed, e.g. '2012-156T19:51:57Z'"
+  [d]
+  (tf/unparse (tf/formatters :date-time-no-ms) d))
 
 (def layout-tmpl (html/html-resource "templates/layout.html"))
 
-(def read-more-tmpl (html/html-resource "templates/read-more.html"))
+(def feed-tmpl (html/xml-resource "templates/feed.xml"))
 
-(html/defsnippet read-more read-more-tmpl [:a] [article]
-  [:a] (html/set-attr :href (article-url article)))
+(html/defsnippet atom-entry feed-tmpl [:feed :> :entry] [item]
+  [:title] (html/content (:title item))
+  [:link] (html/set-attr :href (article-url item))
+  [:id] (html/content (article-url item))
+  [:updated] (html/content (format-feed-date (:pubdate item)))
+  [:content] (html/content (html/emit*                            
+                            (html/select (get-item-content (:id item)) [:body]))))
+
+(html/deftemplate atom-feed feed-tmpl [& {:keys [title tag url items updated]}]
+  [:feed :> :title] (if title (html/content title) identity)
+  [:feed :> [:link (html/attr= :rel "self")]] (html/set-attr :href url)
+  [:feed :> :id] (html/content url)
+  [:feed :> :updated] (html/content (format-feed-date updated))
+  [:feed :> :category] (when tag (html/content tag))
+  [:feed :> :entry] (html/clone-for [item items] (html/substitute (atom-entry item))))
 
 (html/defsnippet tag layout-tmpl [:#tagcloud :ul :> html/first-child] [[tag-name tag-count]]
-  [:li] (html/set-attr :class (tag-class-for-count tag-count))
+  [:li] (html/set-attr :class (tag-class tag-count))
   [:li :a] (html/do->
             (html/set-attr :href (tag-url tag-name))
             (html/content tag-name)))
@@ -51,33 +76,52 @@
 (html/defsnippet categories layout-tmpl [:ul#categories :> html/first-child] [tags]
   [:li] (html/clone-for [t tags] (html/content (category t))))
 
-(html/defsnippet article article-tmpl  [:div.article] [item]
+(html/defsnippet article layout-tmpl  [:#main-content :div.article] [item & {:keys [teaser]}]
   [:.article-head :a] (html/do->
                        (html/content (:title item))
                        (html/set-attr :href (article-url item)))
   [:.article-subhead :span.author] (html/content (:author item))
   [:.article-subhead :span.pubdate] (html/content (format-date (:pubdate item)))
-  [:.article-content] (html/content (:content item)))
+  [:.article-content] (html/content (if teaser (:teaser item) (get-item-content (:id item))))
+  [:a#read-more] (when teaser (html/do->
+                               (html/remove-attr :id)
+                               (html/set-attr :href (article-url item)))))
 
-(html/deftemplate layout layout-tmpl [& {:keys [content msg]}]
-  [:#info-msg] (when msg (html/content msg))
+(html/deftemplate layout layout-tmpl [& {:keys [content mesg feed]}]
+  [:link#atom-feed] (html/do-> (html/remove-attr :id) (if feed (html/set-attr :href feed) identity))
+  [:#info-msg] (when mesg (html/content mesg))
   [:#tagcloud :ul] (html/content (tagcloud (get-tags)))
   [:ul#categories] (html/content (categories (sort-by first (get-tags))))
   [:#main-content] (html/content content))
 
-(defn article-teaser
-  [item]
-  (let [teaser (article (assoc item :content (html/select (:content item) [:p.teaser])))]
-    (html/transform teaser [:.article-content] (html/append (read-more item)))))
+(defn render-article
+  [id & {:keys [preview?]}]
+  (let [m (get-item-meta id)]
+    (when (and m (or preview? (:pubdate m)))
+      (layout :content (article m :teaser false)))))
 
-(defn render-single-article
-  [id]
-  (when-let [a (get-item id)]
-    (layout :content (article a))))
+(defn render-latest-items
+  [& {:keys [tag]}]
+  (let [items (get-latest-items :tag tag)
+        mesg  (when tag (str "Showing items tagged '" tag "'"))]
+    (layout :mesg mesg
+            :feed (feed-url tag)
+            :content (interpose {:tag :hr}
+                                (map #(article % :teaser true) items)))))
 
-(defn render-article-list
-  [& {:keys [msg articles]}]
-  (let [articles (filter identity (map #(get-item (:id %)) articles))]
-    (layout :content (interpose {:tag :hr} (map article-teaser articles)))))
+(defn render-contact-details
+  []
+  (layout :content (get-item-content "contact")))
 
+(defn latest-date
+  [dts]
+  (reduce (fn [dt-a dt-b] (if (ct/after? dt-a dt-b) dt-a dt-b)) dts))
 
+(defn render-feed
+  [& {:keys [tag]}]
+  (let [items (get-latest-items :tag tag)]
+    {:headers {"Content-Type" "application/atom+xml"}
+     :body (atom-feed :tag     tag
+                      :url     (feed-url tag)
+                      :updated (latest-date (map :pubdate items))
+                      :items   items)}))
