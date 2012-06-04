@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>SANE 2000 Conference Report</title>
+  <meta name="author" content="Ray Miller">
+  <meta name="tags" content="conference, systems administration">
+  <meta name="pubdate" content="2000-06-01">
+</head>
+
+<body>
+  <p class="teaser">The Second International System Administration and
+  Network Engineering
+  Conference (SANE 2000) took place from 22-25 May 2000 at the
+  Maastricht Exhibition and Conference Centre (MECC) in the
+  Netherlands. More than five hundred delegates from twenty-seven
+  countries descended on the MECC for the conference, organized by
+  the <a href="http://www.nluug.nl/">Netherlands UNIX User
+  Group</a> and co-sponsored by <a href=
+  "http://www.usenix.org/">USENIX</a> and <a href=
+  "http://www.nlnet.nl/">Stichting NLnet</a>.</p>
+
+  <p>The conference was preceded by two tutorial days, with topics
+  including <a href="http://www.sendmail.com/">Sendmail</a>
+  configuration, delivered by Eric Allman, author of Sendmail;
+  IPSEC and FreeS/WAN, by Hugh Daniel of the <a href=
+  "http://www.xs4all.nl/~freeswan/">Linux FreeS/WAN project</a>;
+  DNS administration, by Jim Reid of <a href=
+  "http://www.nominum.com/">Nominum</a>; and firewall technologies,
+  by Jos Vos of <a href="http://www.xos.nl/">X/OS Experts in Open
+  Systems</a>.</p>
+
+  <p>The main conference began with a <a href=
+  "http://pa.bell-labs.com/~bkreid/sane2000/">keynote address</a>
+  from Brian Reid of Bell Labs, entitled <em>Blame Allocation: the
+  key to successful system administration in a world in which
+  absolutely everyone uses the Internet and absolutely no one is in
+  charge</em>. He discussed administrative boundaries: with many
+  entities involved in information delivery (particularly with the
+  advent of wireless Internet and WAP phones) there are many
+  boundaries and you have no control over other people's systems.
+  Who do you blame when something goes wrong? The lazy solution is
+  to buy everything from one vendor, but this brings its own
+  problems: computer viruses; license fees; implementations not
+  conforming to standards or subject to public review; monopoly
+  plans not consistent with your own.</p>
+
+  <p>He also had some interesting ideas on infrastructure for
+  information delivery: maybe one day we will all have a data meter
+  in our homes just like we now have an electricity meter.
+  Telephone, Internet, and television will all come down the same
+  wire, with different companies competing for our custom and
+  delivering over the same physical channel - as is happening now
+  with the power utilities.</p>
+
+  <p>Another of his messages was that good marketing can sell bad
+  software: sometimes the name is everything. We should use a
+  single brand name to stand for "not controlled by a monopoly."
+  Will Linux and FreeBSD find a way to combine forces?</p>
+
+  <p>After the keynote the conference split into two main streams
+  of technical presentations with additional BoF (Birds of a
+  Feather) and WiP (Work in Progress) sessions.</p>
+
+  <p>The first technical session I attended was <em>Confining the
+  Omnipotent Root</em> by Poul-Henning Kamp of the FreeBSD project.
+  He talked about the FreeBSD jail facility that allows an
+  administrator to partition the system into separate virtual
+  machines, or "jails." Management capabilities for each virtual
+  machine environment can be delegated, but a privileged user in a
+  jail cannot affect the parts of the system outside their virtual
+  machine. This is a very useful feature for ISPs and the like who
+  offer virtual hosting. During questions at the end, Malcolm
+  Beattie pointed out that the FreeBSD jails are a special case of
+  the "compartments" element of MAC (Mandatory Access Control) that
+  he has <a href=
+  "http://users.ox.ac.uk/~mbeattie/linux-kernel.html">implemented</a>
+  for the Linux kernel.</p>
+
+  <p>The next two technical sessions concerned cryptography:
+  <em>How to Ring a Swan</em> by Baastian Bakker; then
+  <em>Architecture for Secure Multicast Communications</em> by
+  R&uuml;diger Weis. Baastian's talk covered methods for storing
+  private key information on an <a href=
+  "http://www.ibutton.com/ibuttons/">iButton</a> device, rather
+  than in a configuration file, while R&uuml;diger talked about
+  adding security (strong cryptography, real-time streaming, and
+  reliability) to multicast applications, based on OpenPGP and RTP
+  (Real-time Transport Protocol). These talks are described in
+  detail in the conference proceedings.</p>
+
+  <p>In the afternoon I attended the Linux High-Availability BoF
+  session. Alan Robertson talked about the goals of the <a href=
+  "http://www.linux-ha.org/">High-Availability Linux project</a>:
+  <em>...to provide a high-availability (clustering) solution for
+  Linux which promotes reliability, availability, and
+  serviceability (RAS) through a community development effort</em>.
+  He discussed software that is currently available, and things
+  planned for the future - which include a port of SGI's FailSafe
+  to Linux. This was not a formal presentation and there was some
+  audience interaction, as well as some disagreement! This session
+  was of particular interest to me as my job includes
+  administration of the Linux cluster, <a href=
+  "http://users.ox.ac.uk/~mbeattie/herald-ukuug99.ps">Herald</a>,
+  that provides mail store and web-based email access to staff and
+  students at Oxford University.</p>
+
+  <p>The final technical session of the day was <em>Bastille Linux:
+  Security Through Transparency</em>, presented by Jon Lasser of
+  the University of Maryland, Baltimore County (UMBC). Jon was
+  hired by UMBC to tackle the problems of Linux spreading rapidly
+  throughout the University network: Linux is easy to install, but
+  hard to administer (securely). An environment with inexperienced
+  administrators, applying security updates infrequently (if at
+  all), lead to wide-open systems and frequent break-ins. Bastille
+  Linux was originally intended to be a Linux distribution that
+  improved security over existing distributions. Instead, a
+  hardening script (based on the RedHat distribution) was
+  developed. More information about Bastille Linux is available
+  from their <a href="http://bastille-linux.sourceforge.net/">home
+  page</a>.</p>
+
+  <p>In the evening came the conference social event, held at
+  <em>La Bonbonni&egrave;re</em> in the centre of Maastricht. This
+  included free pinball; live music from <em>The Konkoma Maximum
+  Love Open Source Software Orchestra</em> - a salsa band dressed
+  as penguins; plenty of food and drink; and the American comedy
+  act Boom Chicago! In the Netherlands, beer is served in 1/3 litre
+  glasses with a large head, and on hearing that I was English (or
+  perhaps prompted by my frequent appearance at the bar) one of the
+  staff commented that I must find their beer glasses very
+  small!</p>
+
+  <p>The second conference day began with Thomas Fehr, co-author of
+  YaST (Yet another Setup Tool) and one of the founders of <a href=
+  "http://www.suse.de/">SuSE Linux</a>, discussing automated
+  installation (and configuration) of Linux. This was another talk
+  of particular interest to me: I haven't looked closely at any of
+  the automated tools before, but have been prompted me to take
+  another look at RedHat's kickstart utility.</p>
+
+  <p>Next came two talks on packet filtering. The first covered
+  <a href="http://coombs.anu.edu.au/~avalon/">IP Filter</a>, a
+  packet-filtering engine available for *BSD and Solaris. This was
+  a technical (but interesting!) talk concentrating on the new
+  state engine in IP Filter. The second discussed a new, rule-based
+  interface to the Linux kernel for packet filtering, which enables
+  implementation of flexible, fine-grained firewall rules.
+  Development moves quickly in the Linux world, and while the first
+  pre-release of the 2.4 kernel has just been announced, the
+  author's patches are against 2.0.34. The example given in the
+  talk (of firewalling an FTP server) was of a policy that would be
+  better implemented by the FTP daemon. Again, details of these two
+  talks appear in the conference proceedings.</p>
+
+  <p>After lunch was a talk by Mark Burgess of Oslo College,
+  <em>Evaluation of cfengine's immunity model of system
+  maintenance</em>. The author pointed out that his interest was
+  primarily academic: cfengine was developed to help study system
+  administration and not as a practical tool (although some people
+  find it useful). As the title promised, the presentation
+  concentrated on the "immunity model" and I left the talk still
+  not knowing what cfengine might do to help me in the job of
+  system maintenance!</p>
+
+  <p>This was followed by <em>Deploying (and Developing) Free
+  Software for Network Administration</em>, a talk by Alexios
+  Zevras of Athens University. He described two projects he had
+  been involved in: Cordial, a system for administration of a
+  dial-up access service; and an as-yet unnamed system for
+  monitoring and reporting the status of various servers and
+  services. He described some of the advantages of custom software
+  over the commercial alternatives (focussed functionality and
+  familiarity of administrators) and of component-based systems
+  over all-encompassing (hence very large) software solutions.</p>
+
+  <p>One of the most entertaining technical talks came at the end
+  of the second day: <em>Crypto Blunders</em> by Steve Burnett of
+  RSA Security Inc. Steve described some of the mistakes people
+  have made over the years in their use of cryptography: putting a
+  back door into the product; implementing the algorithm
+  incorrectly; using a one-time pad more than once. The talk was
+  spiced with amusing anecdotes and the presenter didn't shy away
+  from pointing the finger (although he has promised some of those
+  concerned that this will be the last time they are
+  mentioned).</p>
+
+  <p>It wasn't possible to attend every session, but they were all
+  recorded on video and available for viewing throughout the
+  conference. Sessions I missed included: <em><a href=
+  "http://www.netrack.net/sane2000/tsld001.htm">Wireless Internet
+  delivery</a>; Future directions of Sendmail; Cricket (Web TV);
+  <a href="http://www.nfsv4.org/">NFS version 4</a>; Modern file
+  systems and storage; An experimental tool for visual data mining;
+  DNS-SEC; <a href="http://www.nntp.sol.net/sane2000/">Usenet news
+  system</a></em>. There was also a vendor exhibition where
+  hardware and software vendors, support services, Linux
+  distributors and booksellers displayed their wares.</p>
+
+  <p>The conference closed with thank you speeches to the
+  organizers, volunteers, and speakers, and an award for best paper
+  given to Brian Pawlowski for his presentation on the NFS Version
+  4 Protocol. Finally came the zany inSANE quiz, which got off the
+  ground after some problems with a Perl script and X
+  configuration. Quiz topics included assembler instructions; Monty
+  Python; SCSI commands; cartoon characters; programming languages.
+  Contestants bent their minds to questions such as:</p>
+
+  <ul>
+    <li>What are the first names of K&amp;R?</li>
+
+    <li>What type of parrot did John Cleese complain about?</li>
+
+    <li>Which SCSI command locks a device for exclusive use?</li>
+
+    <li>Who said "Real programmers can program assembler in any
+    language"?</li>
+
+    <li>Which chip does the assembler instruction HCF belong
+    to?</li>
+  </ul>
+
+  <p>The quiz master claimed to have all the answers in his
+  head!</p>
+
+  <p>As well as printed proceedings, T-shirts and other goodies
+  were to be found in the conference packs. I wonder how many red
+  faces were seen coming through airport security on the way home -
+  the baggage checkers at Maastricht told us they'd found at least
+  a dozen people with handcuffs in their bags: <em>security in a
+  box</em> from <a href="http://www.tunix.nl/">tunix</a>.</p>
+
+  <p>The MECC provided excellent facilities for the conference, and
+  Maastricht the ideal setting - with good transport links,
+  first-class hotels and restaurants, and - although served in
+  small glasses - good beer! Everyone I encountered spoke excellent
+  English, and I felt ashamed that I couldn't even say "thank you"
+  in Dutch. The conference itself was well-organized and offered a
+  good selection of talks, with something for (almost) everyone.
+  Good attention was paid to detail, with a conference badge
+  entitling you to free travel on the local buses. I'm looking
+  forward to SANE III, which is planned for about eighteen months
+  time. Perhaps by then I'll have learned some Dutch!</p>
+</body>
+</html>
