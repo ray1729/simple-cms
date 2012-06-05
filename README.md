@@ -23,15 +23,16 @@ the server at <code>/content/some/path</code> (note: no
 <code>.html</code> suffix). These articles are simple HTML with some
 extra meta tags in the header, for example:
 
-  <html>
-    <head>
-      <title>Book Review - Secure Coding: Principles and Practices</title>
-      <meta name="author" content="Ray Miller" />
-      <meta name="tags" content="book review, programming, security" />
-      <meta name="pubdate" content="2004-06-01" />
-    </head>
-    <body>
-      <p class="teaser">
+<pre>
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Book Review - Secure Coding: Principles and Practices&lt;/title&gt;
+      &lt;meta name="author" content="Ray Miller" /&gt;
+      &lt;meta name="tags" content="book review, programming, security" /&gt;
+      &lt;meta name="pubdate" content="2004-06-01" /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;p class="teaser"&gt;
         This slim volume contains a wealth of information that will be of
         interest not only to software developers, but to anyone
         responsible for the deployment and operation of computer systems.
@@ -40,9 +41,10 @@ extra meta tags in the header, for example:
         overall software development process, and relatively little is
         said about coding per se. But do not let this put you off,
         programmers will benefit from reading this book too.
-      </p>
-    </body>
-  </html>
+      &lt;/p&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+</pre>
 
 The <code>title</code>, <code>author</code> and <code>pubdate</code>
 become the header and subheader of the displayed item. The
