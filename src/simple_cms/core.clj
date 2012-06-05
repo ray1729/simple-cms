@@ -17,7 +17,7 @@
 (defn do-refresh-site-content
   "Execute `refresh-site-content!` in a separate thread, return immediately"
   [api-key]
-  (if (= api-key (get-properties :api-key))
+  (if (= api-key (get-property :api-key))
     (do (.execute executor-service #(refresh-site-content! (get-property :site-content-dir)))
         "<p>Content refresh initiated</p>")
     {:status 403 :body "<p>Invalid API key</p>"}))
