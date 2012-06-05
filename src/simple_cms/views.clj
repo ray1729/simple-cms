@@ -108,10 +108,6 @@
             :content (interpose {:tag :hr}
                                 (map #(article % :teaser true) items)))))
 
-(defn render-contact-details
-  []
-  (layout :content (get-item-content "contact")))
-
 (defn latest-date
   [dts]
   (reduce (fn [dt-a dt-b] (if (ct/after? dt-a dt-b) dt-a dt-b)) dts))

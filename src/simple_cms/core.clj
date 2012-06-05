@@ -2,7 +2,7 @@
   (:use compojure.core
         [simple-cms.properties :only (get-property)]
         [simple-cms.content :only (refresh-site-content!)]
-        [simple-cms.views :only (render-latest-items render-article render-feed render-contact-details)])
+        [simple-cms.views :only (render-latest-items render-article render-feed)])
   (:require [compojure.route :as route]
             [compojure.handler :as handler])
   (:import [java.util.concurrent Executors]))
