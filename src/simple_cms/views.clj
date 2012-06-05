@@ -1,26 +1,25 @@
 (ns simple-cms.views
-  (:use [simple-cms.content :only (get-latest-items get-item-meta get-item-content get-tags)])
+  (:use [simple-cms.content :only (get-latest-items get-item-meta get-item-content get-tags)]
+        [simple-cms.properties :only (get-property)])
   (:require [net.cgrand.enlive-html :as html]
             [clj-time.core :as ct]
             [clj-time.format :as tf]))
 
-(def base-url "http://localhost:3000/")
-
 (defn feed-url
   [tag]
   (if tag
-    (str base-url "feed/" tag)
-    (str base-url "feed")))
+    (str (get-property :base-url) "feed/" tag)
+    (str (get-property :base-url) "feed")))
 
 (defn article-url
   "Returns the url for `article`"
   [article]
-  (str base-url "content/" (:id article)))
+  (str (get-property :base-url) "content/" (:id article)))
 
 (defn tag-url
   "Returns the url for `tag`"
   [tag]
-  (str base-url "tags/" tag))
+  (str (get-property :base-url) "tags/" tag))
 
 (defn tag-class
   "Computes the class for a tag with count `n` (log2 scale)"

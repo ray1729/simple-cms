@@ -1,4 +1,5 @@
 (ns simple-cms.content
+  (:use [simple-cms.properties :only (get-property)])
   (:require [net.cgrand.enlive-html :as html]
             [clojure.java.io :as io]
             [clojure.string :as string]
@@ -86,7 +87,7 @@
 (defn get-latest-items
   "Returns the latest published items a page at a time, optionally
   filtering for `tag`"
-  [& {:keys [tag page pagesize] :or {page 1 pagesize 10}}]
+  [& {:keys [tag page pagesize] :or {page 1 pagesize (get-property :page-size)}}]
   (let [wanted? (if tag (fn [item] (contains? (:tags item) tag)) identity)]
     (take pagesize (drop (* pagesize (dec page)) (filter wanted? @published-items)))))
 
