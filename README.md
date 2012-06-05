@@ -18,7 +18,7 @@ are served verbatim. For example, the file
 <code>$SITE_DIR/static/some/path.png</code> can be accessed from the
 server via <code>/some/path.png</code>.
 
-Items in <code>$SIDE_DIR/content/some/path.html</code> will appear on
+Items in <code>$SITE_DIR/content/some/path.html</code> will appear on
 the server at <code>/content/some/path</code> (note: no
 <code>.html</code> suffix). These articles are simple HTML with some
 extra meta tags in the header, for example:
@@ -62,7 +62,11 @@ like to edit your content offline and commit to a version control
 system. With this in mind, it also implements
 <code>/api/refresh-site-content</code> which handles POST requsets
 containing an API key. If the key is valid, a git pull and metadata
-rebuild is initiated, updating the site content.
+rebuild is initiated, updating the site content. This will usually be
+triggered by a post-commit hook in your VCS.
+
+The content paths and API key are configured
+in <code>resources/simple-cms.properties</code>.
 
 ## Demo site
 
