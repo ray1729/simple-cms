@@ -73,7 +73,7 @@
             (html/content (str tag-name " (" tag-count ")"))))
 
 (html/defsnippet categories layout-tmpl [:ul#categories :> html/first-child] [tags]
-  [:li] (html/clone-for [t tags] (html/content (category t))))
+  [:li] (html/clone-for [t tags] (html/substitute (category t))))
 
 (html/defsnippet article layout-tmpl  [:#main-content :div.article] [item & {:keys [teaser]}]
   [:.article-head :a] (html/do->

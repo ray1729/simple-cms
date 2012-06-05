@@ -1,5 +1,6 @@
 (ns simple-cms.content
-  (:use [simple-cms.properties :only (get-property)])
+  (:use [simple-cms.properties :only (get-property)]
+        [clojure.java.shell :only (sh)])
   (:require [net.cgrand.enlive-html :as html]
             [clojure.java.io :as io]
             [clojure.string :as string]
@@ -76,6 +77,7 @@
   (reverse (sort-by :pubdate (filter :pubdate meta))))
 
 (defn update-site-metadata!
+  "Rebuild the site metadata and update cached data structures"
   [site-content-dir]
   (let [data (get-site-content-metadata site-content-dir)]
     (dosync
@@ -83,6 +85,13 @@
      (ref-set published-items (build-published-items data))
      (ref-set tag-index (build-tag-index data))))
   nil)
+
+(defn refresh-site-content!
+  "Execute a git pull then update site metadata"
+  [site-content-dir]
+  ;; XXX Error checking?
+  (sh "git" "pull" "--ff-only" :dir site-content-dir)
+  (update-site-metadata! site-content-dir))
 
 (defn get-latest-items
   "Returns the latest published items a page at a time, optionally
@@ -92,20 +101,24 @@
     (take pagesize (drop (* pagesize (dec page)) (filter wanted? @published-items)))))
 
 (defn get-item-count
+  "Return the number of published items (optionally just those tagged `tag`)"
   [& {:keys [tag]}]  
   (if tag
     (count (get @tag-index tag))
     (count @published-items)))
 
 (defn get-item-content
+  "Return the item content as a parsed HTML resoure (reads data from disk)"
   [id]
   (when-let [item (get @metadata id)]
     (html/html-resource (:file item))))
 
 (defn get-item-meta
+  "Return the item metadata from the cache"
   [id]
   (get @metadata id))
 
 (defn get-tags
-  []
+  "Return a list of pairs [tag count] for each tag with published items"
+  [] 
   (map (fn [[k v]] [k (count v)]) @tag-index))
