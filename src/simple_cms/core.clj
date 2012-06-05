@@ -35,7 +35,7 @@
        (render-feed))
   (GET "/feed/:tag" [tag]
        (render-feed :tag tag))
-  (POST "/api/refresh-site-content" [api-key]
+  (POST "/api/refresh-site-content/:api-key" [api-key]
         (do-refresh-site-content api-key))
   (route/files "/" {:root (get-property :site-static-dir)})
   (route/not-found "Page not found"))
