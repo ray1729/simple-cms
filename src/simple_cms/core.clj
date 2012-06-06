@@ -7,12 +7,9 @@
             [compojure.handler :as handler])
   (:import [java.util.concurrent Executors]))
 
-;; Make sure the metadata is populated at application startup
-(refresh-site-content! (get-property :site-content-dir))
-
 ;; Future metadata updates are done in a separate thread. Just one
 ;; thread, so multiple concurrent update requests are serialized.
-(def executor-service (Executors/newSingleThreadExecutor))
+(declare executor-service)
 
 (defn do-refresh-site-content
   "Execute `refresh-site-content!` in a separate thread, return immediately"
@@ -39,6 +36,16 @@
         (do-refresh-site-content api-key))
   (route/files "/" {:root (get-property :site-static-dir)})
   (route/not-found "Page not found"))
+
+(defn init
+  []
+  ;; Make sure the metadata is populated at application startup
+  (refresh-site-content! (get-property :site-content-dir))
+  (def executor-service (Executors/newSingleThreadExecutor)))
+
+(defn destroy
+  []
+  (when executor-service (.shutdown executor-service)))
 
 (def app
   (handler/site main-routes))

@@ -4,4 +4,6 @@
                  [compojure "1.1.0"]
                  [enlive "1.0.0"]
                  [clj-time "0.4.2"]]
-  :ring {:handler simple-cms.core/app})
+  :ring {:handler simple-cms.core/app
+         :init simple-cms.core/init
+         :destroy simple-cms.core/destroy})
