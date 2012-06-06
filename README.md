@@ -70,8 +70,8 @@ in <code>resources/simple-cms.properties</code>.
 
 ## Demo site
 
-I will shortly be using this software to host my own website,
-<http://www.1729.org.uk/>.
+This software is currently hosting my own website,
+<http://cms.1729.org.uk/>.
 
 ## License
 
