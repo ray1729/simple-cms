@@ -18,6 +18,7 @@
      :site-dir         (get props "site-dir")
      :site-content-dir (str (get props "site-dir") "/content")
      :site-static-dir  (str (get props "site-dir") "/static")
+     :code-snippet-dir (str (get props "site-dir") "/snippets")
      :page-size        (Integer/parseInt (get props "page-size"))
      :api-key          (get props "api-key")}))
 
