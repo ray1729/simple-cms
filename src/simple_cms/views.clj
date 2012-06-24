@@ -62,7 +62,7 @@
   [:id] (html/content (article-url item))
   [:updated] (html/content (format-feed-date (:pubdate item)))
   [:content] (html/content (html/emit* (expand-code-snippets
-                                        (html/select (get-item-content (:id item)) [:body])
+                                        (html/unwrap (first (html/select (get-item-content (:id item)) [:body]))) 
                                         :escape-html false))))
 
 (html/deftemplate atom-feed feed-tmpl [& {:keys [title tag url items updated]}]
