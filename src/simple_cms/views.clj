@@ -53,8 +53,8 @@
           (html/content code)))
 
 (defn expand-code-snippets
-  [content & {:keys [escape-html] :or {escape-html true}}]
-  (html/at content [:snippet] (fn [s] (code-snippet (get-code-snippet (:src (:attrs s)) :escape-html escape-html)))))
+  [content]
+  (html/at content [:snippet] (fn [s] (code-snippet (get-code-snippet (:src (:attrs s)))))))
 
 (html/defsnippet atom-entry feed-tmpl [:feed :> :entry] [item]
   [:title] (html/content (:title item))
@@ -62,8 +62,7 @@
   [:id] (html/content (article-url item))
   [:updated] (html/content (format-feed-date (:pubdate item)))
   [:content] (html/content (html/emit* (expand-code-snippets
-                                        (html/unwrap (first (html/select (get-item-content (:id item)) [:body]))) 
-                                        :escape-html false))))
+                                        (html/unwrap (first (html/select (get-item-content (:id item)) [:body])))))))
 
 (html/deftemplate atom-feed feed-tmpl [& {:keys [title tag url items updated]}]
   [:feed :> :title] (if title (html/content title) identity)

@@ -125,12 +125,9 @@
 
 (defn get-code-snippet
   "Look for a file `name` in the snippets directory. Return the file
-  content (optionally with HTML tags escaped) and suffix"
-  [name & {:keys [escape-html] :or {escape-html true}}]
+  content and suffix."
+  [name]
   (let [filename (str (get-property :code-snippet-dir) "/" name)
         suffix   (second (re-find #"\.([^.]+)$" name))
         content  (slurp filename)]
-    [(if escape-html
-       (-> content (string/replace ">" "&gt;") (string/replace "<" "&lt;"))
-       content)
-     suffix]))
+    [content suffix]))
