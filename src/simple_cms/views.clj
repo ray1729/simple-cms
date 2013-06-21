@@ -1,5 +1,5 @@
 (ns simple-cms.views
-  (:use [simple-cms.content :only (get-latest-items get-item-meta get-item-content get-tags)]
+  (:use [simple-cms.content :only (get-latest-items get-item-meta get-item-content get-tags get-code-snippet)]
         [simple-cms.properties :only (get-property)])
   (:require [net.cgrand.enlive-html :as html]
             [clj-time.core :as ct]
@@ -42,13 +42,27 @@
 
 (def feed-tmpl (html/xml-resource "templates/feed.xml"))
 
+(def code-snippet-tmpl (html/html-resource "templates/code-snippet.html"))
+
+(def brush-for
+  {"pl" "perl", "clj" "clojure", "sh" "bash"})
+
+(html/defsnippet code-snippet code-snippet-tmpl [:pre] [[code suffix]]
+  [:pre] (html/do->
+          (html/set-attr :class (str "brush: " (or (brush-for suffix) "Plain")))
+          (html/content code)))
+
+(defn expand-code-snippets
+  [content]
+  (html/at content [:snippet] (fn [s] (code-snippet (get-code-snippet (:src (:attrs s)))))))
+
 (html/defsnippet atom-entry feed-tmpl [:feed :> :entry] [item]
   [:title] (html/content (:title item))
   [:link] (html/set-attr :href (article-url item))
   [:id] (html/content (article-url item))
   [:updated] (html/content (format-feed-date (:pubdate item)))
-  [:content] (html/content (html/emit*                            
-                            (html/select (get-item-content (:id item)) [:body]))))
+  [:content] (html/content (html/emit* (expand-code-snippets
+                                        (html/unwrap (first (html/select (get-item-content (:id item)) [:body])))))))
 
 (html/deftemplate atom-feed feed-tmpl [& {:keys [title tag url items updated]}]
   [:feed :> :title] (if title (html/content title) identity)
@@ -81,7 +95,7 @@
                        (html/set-attr :href (article-url item)))
   [:.article-subhead :span.author] (html/content (:author item))
   [:.article-subhead :span.pubdate] (html/content (format-date (:pubdate item)))
-  [:.article-content] (html/content (if teaser (:teaser item) (get-item-content (:id item))))
+  [:.article-content] (fn [_] (expand-code-snippets (if teaser (:teaser item) (get-item-content (:id item)))))
   [:a#read-more] (when teaser (html/do->
                                (html/remove-attr :id)
                                (html/set-attr :href (article-url item)))))

@@ -122,3 +122,12 @@
   "Return a list of pairs [tag count] for each tag with published items"
   [] 
   (map (fn [[k v]] [k (count v)]) @tag-index))
+
+(defn get-code-snippet
+  "Look for a file `name` in the snippets directory. Return the file
+  content and suffix."
+  [name]
+  (let [filename (str (get-property :code-snippet-dir) "/" name)
+        suffix   (second (re-find #"\.([^.]+)$" name))
+        content  (slurp filename)]
+    [content suffix]))
