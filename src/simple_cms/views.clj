@@ -103,7 +103,7 @@
 (html/deftemplate layout layout-tmpl [& {:keys [content mesg feed]}]
   [:link#atom-feed] (html/do-> (html/remove-attr :id) (if feed (html/set-attr :href feed) identity))
   [:#info-msg] (when mesg (html/content mesg))
-  [:#tagcloud :ul] (html/content (tagcloud (get-tags)))
+  [:#tagcloud :ul] (html/substitute (tagcloud (get-tags)))
   [:ul#categories] (html/content (categories (sort-by first (get-tags))))
   [:#main-content] (html/content content))
 
