@@ -1,5 +1,5 @@
 (ns simple-cms.views
-  (:use [simple-cms.content :only (get-latest-items get-item-meta get-item-content get-tags get-code-snippet)]
+  (:use [simple-cms.content :only (get-latest-items get-item-count get-item-meta get-item-content get-tags get-code-snippet)]
         [simple-cms.properties :only (get-property)])
   (:require [net.cgrand.enlive-html :as html]
             [clj-time.core :as ct]
@@ -20,6 +20,21 @@
   "Returns the url for `tag`"
   [tag]
   (str (get-property :base-url) "tags/" tag))
+
+(defn newer-items-url
+  [tag page num-items]
+  (when (> page 1)
+    (str (get-property :base-url)
+         (when tag (str "tags/" tag))
+         "?page=" (dec page))))
+
+(defn older-items-url
+  [tag page num-items]
+  (let [pagesize (get-property :page-size)]
+    (when (> num-items (* page pagesize))
+      (str (get-property :base-url)
+           (when tag (str "tags/" tag))
+           "?page=" (inc page)))))
 
 (defn tag-class
   "Computes the class for a tag with count `n` (log2 scale)"
@@ -100,12 +115,23 @@
                                (html/remove-attr :id)
                                (html/set-attr :href (article-url item)))))
 
-(html/deftemplate layout layout-tmpl [& {:keys [content mesg feed]}]
+(html/defsnippet pager layout-tmpl [:ul.pager] [older-items newer-items]
+  [:li#link-older] (fn [node]
+                     (when older-items
+                       (html/at node [:a] (html/set-attr :href older-items))))
+  [:li#link-newer] (fn [node]
+                     (when newer-items
+                       (html/at node [:a] (html/set-attr :href newer-items)))))
+
+
+(html/deftemplate layout layout-tmpl [& {:keys [content mesg feed older-items newer-items]}]
   [:link#atom-feed] (html/do-> (html/remove-attr :id) (if feed (html/set-attr :href feed) identity))
   [:#info-msg] (when mesg (html/content mesg))
   [:#tagcloud :ul] (html/substitute (tagcloud (get-tags)))
   [:ul#categories] (html/content (categories (sort-by first (get-tags))))
-  [:#main-content] (html/content content))
+  [:#main-content] (html/content content)
+  [:ul.pager]      (when (or older-items newer-items)
+                     (html/content (pager older-items newer-items))))
 
 (defn render-article
   [id & {:keys [preview?]}]
@@ -114,11 +140,15 @@
       (layout :content (article m :teaser false)))))
 
 (defn render-latest-items
-  [& {:keys [tag]}]
-  (let [items (get-latest-items :tag tag)
-        mesg  (when tag (str "Showing items tagged '" tag "'"))]
+  [& {:keys [tag page]}]
+  (let [page      (if page (Integer/parseInt page) 1)
+        num-items (get-item-count :tag tag)
+        items     (get-latest-items :tag tag :page page)
+        mesg      (when tag (str "Showing items tagged '" tag "'"))]
     (layout :mesg mesg
             :feed (feed-url tag)
+            :older-items (older-items-url tag page num-items)
+            :newer-items (newer-items-url tag page num-items)
             :content (interpose {:tag :hr}
                                 (map #(article % :teaser true) items)))))
 

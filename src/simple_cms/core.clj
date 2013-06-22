@@ -20,14 +20,14 @@
     {:status 403 :body "<p>Invalid API key</p>"}))
 
 (defroutes main-routes
-  (GET "/" []
-       (render-latest-items))
+  (GET "/" [page]
+       (render-latest-items :page page))
   (GET ["/content/:article-id" :article-id #".+"] [article-id]
        (render-article article-id))
   (GET ["/preview/:article-id" :article-id #".+"] [article-id]
        (render-article article-id :preview? true))
-  (GET "/tags/:tag" [tag]
-       (render-latest-items :tag tag))
+  (GET "/tags/:tag" [tag page]
+       (render-latest-items :tag tag :page page))
   (GET "/feed" []
        (render-feed))
   (GET "/feed/:tag" [tag]
