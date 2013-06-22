@@ -4,12 +4,14 @@
   <title>1729.org.uk</title>
   <link rel="self" href="http://www.1729.org.uk/feed" />
   <link href="http://www.1729.org.uk/"/>
+  <link rel="license" type="application/rdf+xml"
+        href="http://creativecommons.org/licenses/by-sa/3.0/rdf" />
   <updated>2003-12-13T18:30:02Z</updated>
   <category>Some Tag</category>
   <author>
     <name>Ray Miller</name>
   </author>
-  <rights>© 2012 Ray Miller</rights>
+  <rights>© 2013 Ray Miller</rights>
   <id>urn:uuid:BA8577D6-AE80-11E1-878B-ED66A27E4C38</id>
 
   <entry>
