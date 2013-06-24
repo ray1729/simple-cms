@@ -71,10 +71,15 @@
   [content]
   (html/at content [:snippet] (fn [s] (code-snippet (get-code-snippet (:src (:attrs s)))))))
 
+(html/defsnippet atom-category feed-tmpl [:feed :> :entry :> :category]
+  [tag]
+  [:category] (html/content tag))
+
 (html/defsnippet atom-entry feed-tmpl [:feed :> :entry] [item]
   [:title] (html/content (:title item))
   [:link] (html/set-attr :href (article-url item))
   [:id] (html/content (article-url item))
+  [:category] (when-let [tags (:tags item)] (html/clone-for [tag tags] (html/substitute (atom-category tag))))
   [:updated] (html/content (format-feed-date (:pubdate item)))
   [:content] (html/content (html/emit* (expand-code-snippets
                                         (html/unwrap (first (html/select (get-item-content (:id item)) [:body])))))))

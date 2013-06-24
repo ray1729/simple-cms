@@ -7,7 +7,7 @@
   <link rel="license" type="application/rdf+xml"
         href="http://creativecommons.org/licenses/by-sa/3.0/rdf" />
   <updated>2003-12-13T18:30:02Z</updated>
-  <category>Some Tag</category>
+  <category scheme="http://cms.1729.org.uk/tags/">Some Tag</category>
   <author>
     <name>Ray Miller</name>
   </author>
@@ -17,6 +17,7 @@
   <entry>
     <title>Atom-Powered Robots Run Amok</title>
     <link href="http://example.org/2003/12/13/atom03"/>
+    <category scheme="http://cms.1729.org.uk/tags/">Some tag</category>
     <id>http://www.1729.org.uk/content/article-id</id>
     <updated>2003-12-13T18:30:02Z</updated>
     <content type="html">Content goes here</content>
