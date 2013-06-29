@@ -60,11 +60,11 @@
 (def code-snippet-tmpl (html/html-resource "templates/code-snippet.html"))
 
 (def brush-for
-  {"pl" "perl", "clj" "clojure", "sh" "bash"})
+  {"pl" "perl", "clj" "clojure", "sh" "bash", "sql" "sql"})
 
 (html/defsnippet code-snippet code-snippet-tmpl [:pre] [[code suffix]]
   [:pre] (html/do->
-          (html/set-attr :class (str "brush: " (or (brush-for suffix) "Plain")))
+          (html/set-attr :class (str "brush: " (or (brush-for suffix) "plain")))
           (html/content code)))
 
 (defn expand-code-snippets
